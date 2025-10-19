@@ -31,4 +31,17 @@ public class PassengerService {
         store.add(p);
         return p;
     }
+
+    public Optional<Passenger> update(Passenger passenger) {
+        Optional<Passenger> maybePassenger = findById(passenger.getPassengerId());
+        if (maybePassenger.isPresent()) {
+            Passenger update = maybePassenger.get();
+            update.setFirstName(passenger.getFirstName());
+            update.setEmail(passenger.getEmail());
+            return Optional.of(update);
+        }
+        else{
+            return Optional.empty();
+        }
+    }
 }
