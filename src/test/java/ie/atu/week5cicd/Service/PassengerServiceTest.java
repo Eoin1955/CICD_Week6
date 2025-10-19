@@ -36,18 +36,9 @@ public class PassengerServiceTest {
 
     @Test
     void duplicateIdThrows(){
-        service.create(Passenger.builder()
-                .passengerId("P2")
-                .firstName("Eoin")
-                .email("e@gmail.com")
-                .build());
+        service.create(new Passenger("3", "ryan", "anan@gmail.com"));
 
         assertThrows(IllegalArgumentException.class, () ->
-            service.create(Passenger.builder()
-                    .passengerId("P2")
-                    .firstName("Eoinie")
-                    .email("ea@atu.ie")
-                    .build()
-        ));
+            service.create(new Passenger("3", "paul", "paul@atu.ie")));
     }
 }

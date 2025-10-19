@@ -50,4 +50,17 @@ public class PassengerController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePassenger(@PathVariable String id) {
+        Optional<Passenger> passenger = service.findById(id);
+        if (passenger.isPresent()) {
+            service.deletebyId(id);
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
