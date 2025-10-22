@@ -1,5 +1,7 @@
 package ie.atu.week5cicd.controller.errorHandling;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +15,7 @@ import java.util.List;
 public class GlobalExceptionHandling {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public List<ExceptionDetails> showErrorDetails(MethodArgumentNotValidException mae)
+    public ResponseEntity<List<ExceptionDetails>> showErrorDetails(MethodArgumentNotValidException mae)
     {
         List<ExceptionDetails> errorList = new ArrayList<>();
         for(FieldError fieldError : mae.getBindingResult().getFieldErrors()){
@@ -22,7 +24,16 @@ public class GlobalExceptionHandling {
             exceptionDetails.setFieldValue(fieldError.getDefaultMessage());
             errorList.add(exceptionDetails);
         }
-        return errorList;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
+    }
+
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<ExceptionDetails> showErrorDetails(DuplicateException de)
+    {
+        ExceptionDetails exceptionDetails = new ExceptionDetails();
+        exceptionDetails.setFieldName("passengerId");
+        exceptionDetails.setFieldValue(de.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionDetails);
     }
 }
 
